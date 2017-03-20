@@ -1,6 +1,9 @@
 'use strict';
 
-var { utils } = require('lib/utils.js');
+let { storageManager } = require('lib/storage-manager.js');
+let { utils } = require('lib/utils.js');
+
+let { firstrun } = require('lib/content-scripts/firstrun.js');
 
 /**
  * This is called when the add-on is unloaded. If the reason is either uninstall,
@@ -19,5 +22,11 @@ exports.onUnload = function(reason) {
 * since a sidebar was last shown.
 */
 exports.main = function() {
+    let installTime = storageManager.get('installTime');
 
+    // if installTime is undefined, this is the first time the
+    // user is accessing the /firstrun page.
+    if (typeof installTime === 'undefined') {
+        firstrun.setInstallTime();
+    }
 };
