@@ -1,8 +1,11 @@
 'use strict';
 
+let tabs = require('sdk/tabs');
+
 let { storageManager } = require('lib/storage-manager.js');
 let { utils } = require('lib/utils.js');
 
+let { aboutNewTab } = require('lib/content-scripts/about-newtab.js');
 let { firstrun } = require('lib/content-scripts/firstrun.js');
 
 /**
@@ -29,4 +32,11 @@ exports.main = function() {
     if (typeof installTime === 'undefined') {
         firstrun.setInstallTime();
     }
+
+    tabs.on('open', function(tab) {
+        if (tab.url === 'about:newtab' || tab.url === 'about:blank') {
+            tab.reload();
+            aboutNewTab.modifyAboutNewtab();
+        }
+    });
 };
