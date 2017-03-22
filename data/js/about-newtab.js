@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-
     /**
      * Handles click events on the main CTA and emits the intent
      */
