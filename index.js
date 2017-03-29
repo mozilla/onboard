@@ -4,9 +4,7 @@ let tabs = require('sdk/tabs');
 
 let { storageManager } = require('lib/storage-manager.js');
 let { utils } = require('lib/utils.js');
-
-let { aboutNewTab } = require('lib/content-scripts/about-newtab.js');
-let { firstrun } = require('lib/content-scripts/firstrun.js');
+let { scheduler } = require('lib/scheduler.js');
 
 /**
  * This is called when the add-on is unloaded. If the reason is either uninstall,
@@ -21,22 +19,26 @@ exports.onUnload = function(reason) {
 };
 
 /**
-* Initializes the add-on, and checks the time elapsed
-* since a sidebar was last shown.
+* Initializes the add-on
 */
 exports.main = function() {
+    let activeTabURL = tabs.activeTab.url;
     let installTime = storageManager.get('installTime');
+    // 1 day in milliseconds
+    let oneDay = 86400000;
+    let timeElapsedSinceLastLaunch = Date.now() - installTime;
 
     // if installTime is undefined, this is the first time the
-    // user is accessing the /firstrun page.
+    // user is accessing the /firstrun page i.e. first time launching Firefox
     if (typeof installTime === 'undefined') {
-        firstrun.setInstallTime();
+        storageManager.set('installTime', Date.now());
+        // start a new 24 hour timer
+        scheduler.startSnippetTimer(1);
+    // if on launch, the active tab is about:newtab and 24 hours or more has elapsed since first launch
+    } else if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= oneDay) {
+        // inject our tour snippet
+        utils.showSnippet();
     }
 
-    tabs.on('open', function(tab) {
-        if (tab.url === 'about:newtab' || tab.url === 'about:blank') {
-            tab.reload();
-            aboutNewTab.modifyAboutNewtab();
-        }
-    });
+
 };
