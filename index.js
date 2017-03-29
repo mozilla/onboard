@@ -38,6 +38,10 @@ exports.main = function() {
     } else if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= oneDay) {
         // inject our tour snippet
         utils.showSnippet();
+    // if on launch, the active tab is not about:newtab but 24 hours or more has elapsed since first launch
+    } else if (activeTabURL !== 'about:newtab' && timeElapsedSinceLastLaunch >= oneDay) {
+        // start a new tab listener
+        utils.tabListener();
     }
 
 

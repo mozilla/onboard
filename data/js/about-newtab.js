@@ -19,7 +19,16 @@
      */
     self.port.on('modify', function(data) {
         let documentRoot = document.documentElement;
+        let onBoardingTour = document.getElementById('fx_onboarding_tour');
+
+        // if the onboarding tour element exists, first remove it from the DOM
+        if (onBoardingTour) {
+            documentRoot.removeChild(onBoardingTour);
+        }
+
+        // insert the new snippet
         documentRoot.insertAdjacentHTML('beforeend', data);
+        // listen for a click event on the main CTA
         emitCTAIntent();
     });
 })();
