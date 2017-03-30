@@ -37,3 +37,26 @@
     width: 64px;
     align-self: center;
 }
+
+.onboarding .close {
+    display: block;
+    position: absolute;
+    bottom: 120px;
+    right: 20px;
+    background: transparent url('../media/icons/close-icon.svg') 0 0 no-repeat;
+    width: 20px;
+    height: 20px;
+}
+
+/* Hide visually, but not to screen readers */
+.onboarding .close span,
+.visually-hidden {
+    position: absolute!important;
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    padding: 0;
+    border: 0;
+}

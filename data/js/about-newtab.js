@@ -1,14 +1,25 @@
 'use strict';
 
 (function() {
+    let documentRoot = document.documentElement;
     /**
      * Handles click events on the main CTA and emits the intent
      */
     function emitCTAIntent() {
         let cta = document.getElementById('onboarding_cta');
+        let onboardingCloseSnippet = document.getElementById('onboarding_close_snippet');
+        let onBoardingTour = document.getElementById('fx_onboarding_tour');
+
         cta.addEventListener('click', function(event) {
             event.preventDefault();
             self.port.emit('intent', cta.dataset.intent);
+        });
+
+        onboardingCloseSnippet.addEventListener('click', function() {
+            // remove the current snippet
+            documentRoot.removeChild(onBoardingTour);
+            // inform the add-on that the snippet has been dismissed
+            self.port.emit('dismiss');
         });
     }
 
@@ -18,7 +29,6 @@
      * @param {object} data - An object containing the template and page titles.
      */
     self.port.on('modify', function(data) {
-        let documentRoot = document.documentElement;
         let onBoardingTour = document.getElementById('fx_onboarding_tour');
 
         // if the onboarding tour element exists, first remove it from the DOM
