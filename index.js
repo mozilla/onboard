@@ -3,9 +3,17 @@
 let tabs = require('sdk/tabs');
 
 let { intervals } = require('lib/intervals.js');
+let prefService = require('sdk/preferences/service');
 let { scheduler } = require('lib/scheduler.js');
 let { storageManager } = require('lib/storage-manager.js');
 let { utils } = require('lib/utils.js');
+
+/**
+ * A temporary function for testing purposes.
+ */
+function setUpTestEnv() {
+    prefService.set('distribution.variation', 'contentVariationA');
+}
 
 /**
  * This is called when the add-on is unloaded. If the reason is either uninstall,
@@ -29,11 +37,19 @@ exports.main = function() {
     // 1 day in milliseconds
     let oneDay = intervals.oneDay;
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
+    let variation = prefService.get('distribution.variation');
 
     // the first time the add-on is run, the mainTourComplete status
     // will not yet be set. Initialize it to false.
     if (typeof mainTourComplete === 'undefined') {
         storageManager.set('mainTourComplete', false);
+    }
+
+    if (typeof variation === 'undefined') {
+        setUpTestEnv();
+        storageManager.set('variation', prefService.get('distribution.variation'));
+    } else {
+        storageManager.set('variation', variation);
     }
 
     // if installTime is undefined, this is the first time the
