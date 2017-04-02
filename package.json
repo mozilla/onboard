@@ -1,8 +1,8 @@
 {
-  "title": "Firefox OnAboard 1.0",
-  "name": "all-aboard-v1",
+  "title": "Firefox OnBoard",
+  "name": "onboard-v1",
   "version": "1.0.0",
-  "description": "The Mozilla Firefox Onboarding Tool",
+  "description": "The Mozilla Firefox Onboarding Experiment",
   "homepage": "https://github.com/mozilla/onaboard",
   "repository": "https://github.com/mozilla/onaboard",
   "main": "index.js",
