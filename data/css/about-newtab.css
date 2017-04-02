@@ -13,29 +13,61 @@
 
 .onboarding .snippet-content {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row;
     justify-content: center;
     margin: 0 auto;
-    width: 500px;
+    width: 90%;
 }
 
 .onboarding h1 {
     margin: 0 0 5px;
+    font-size: 1.5rem;
 }
 
 .onboarding p {
     margin: 0;
+    font-size: 1rem;
+}
+
+.onboarding .snippet-counter {
+    align-self: center;
+    color: #666;
+    margin: 0 20px;
+    flex-basis: 260px;
+    flex-shrink: 6;
+}
+
+.onboarding .snippet-counter span {
+    background-color: #666;
+    color: #fff;
+    margin-right: 15px;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 .onboarding .snippet-copy {
+    order: 2;
     padding: 0 20px;
-    width: 360px;
+    flex-basis: 460px;
 }
 
 .onboarding .snippet-icon {
-    order: -1;
-    width: 64px;
-    align-self: center;
+    order: 1;
+    flex-basis: 64px;
+    align-self: flex-start;
+}
+
+.onboarding button {
+    display: block;
+    background-color: #0095dd;
+    color: #fff;
+    margin: 10px 0;
+    padding: 10px 36px;
+    border: 2px solid #0092cc;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
 }
 
 .onboarding .close {
