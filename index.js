@@ -25,9 +25,16 @@ exports.onUnload = function(reason) {
 exports.main = function() {
     let activeTabURL = tabs.activeTab.url;
     let installTime = storageManager.get('installTime');
+    let mainTourComplete = storageManager.get('mainTourComplete');
     // 1 day in milliseconds
     let oneDay = intervals.oneDay;
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
+
+    // the first time the add-on is run, the mainTourComplete status
+    // will not yet be set. Initialize it to false.
+    if (typeof mainTourComplete === 'undefined') {
+        storageManager.set('mainTourComplete', false);
+    }
 
     // if installTime is undefined, this is the first time the
     // user is accessing the /firstrun page i.e. first time launching Firefox
