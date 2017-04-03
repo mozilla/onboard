@@ -13,6 +13,8 @@ let { utils } = require('lib/utils.js');
  */
 function setUpTestEnv() {
     prefService.set('distribution.variation', 'contentVariationA');
+    prefService.set('browser.newtab.preload', false);
+    prefService.set('browser.newtab.url', 'about:newtab');
     intervals.waitInterval = 2000;
 }
 
@@ -24,7 +26,7 @@ exports.onUnload = function(reason) {
     if (reason === 'uninstall' || reason === 'disable') {
         utils.destroy();
     } else if (reason === 'shutdown') {
-        // shutdown cleanup code goes here
+        // do cleanup
     }
 };
 
@@ -68,6 +70,4 @@ exports.main = function() {
         // start a new tab listener
         utils.tabListener();
     }
-
-
 };
