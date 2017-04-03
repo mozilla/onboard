@@ -13,6 +13,7 @@ let { utils } = require('lib/utils.js');
  */
 function setUpTestEnv() {
     prefService.set('distribution.variation', 'contentVariationA');
+    intervals.waitInterval = 2000;
 }
 
 /**
