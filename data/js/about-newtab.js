@@ -19,7 +19,7 @@
             // remove the current snippet
             documentRoot.removeChild(onBoardingTour);
             // inform the add-on that the snippet has been dismissed
-            self.port.emit('dismiss');
+            self.port.emit('intent', 'dismiss');
         });
     }
 
