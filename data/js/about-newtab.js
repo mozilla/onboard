@@ -12,6 +12,10 @@
 
         cta.addEventListener('click', function(event) {
             event.preventDefault();
+
+            // remove the current snippet
+            documentRoot.removeChild(onBoardingTour);
+
             self.port.emit('intent', cta.dataset.intent);
         });
 
