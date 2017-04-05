@@ -84,14 +84,14 @@
     position: absolute;
     bottom: 120px;
     right: 20px;
-    background: transparent url('../media/icons/close-icon.svg') 0 0 no-repeat;
-    background-size: 30px 30px;
-    width: 30px;
-    height: 30px;
+    background: transparent url('../media/icons/close-button.svg') 0 0 no-repeat;
+    background-size: 25px 25px;
+    width: 25px;
+    height: 25px;
 }
 
 .onboarding .close:hover {
-    background-image: url('../media/icons/close-icon-hover.svg');
+    background-image: url('../media/icons/close-button-hover.svg');
 }
 
 /* Hide visually, but not to screen readers */
