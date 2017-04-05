@@ -17,8 +17,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 2000;
-    intervals.waitInterval = 2000;
+    intervals.oneDay = 30000;
+    intervals.waitInterval = 30000;
 }
 
 /**
@@ -38,8 +38,9 @@ exports.onUnload = function(reason) {
 */
 exports.main = function() {
     let activeTabURL = tabs.activeTab.url;
+    let durationTimerStartTime = storageManager.get('durationTimerStartTime');
+    let intervalTimerStartTime = storageManager.get('intervalTimerStartTime');
     let installTime = storageManager.get('installTime');
-    let oneDay = intervals.oneDay;
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
     let variation = prefService.get('distribution.variation');
 
@@ -57,21 +58,32 @@ exports.main = function() {
         // will not be set. Initialize it to false.
         storageManager.set('mainTourComplete', false);
         // start a 24 hour timer for this session
-        scheduler.startFirstSnippetTimer(1);
+        scheduler.startFirstSnippetTimer();
     }
 
     if (typeof installTime !== 'undefined') {
         // call the session counter
         utils.browserSessionCounter();
 
-        // if on launch, the active tab is about:newtab and 24+ hours have elapsed since first launch
-        if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= oneDay) {
-            // inject our tour snippet
-            aboutNewTab.showSnippet();
-        // if on launch, the active tab is not about:newtab but 24+ hours have elapsed since first launch
-        } else if (activeTabURL !== 'about:newtab' && timeElapsedSinceLastLaunch >= oneDay) {
-            // start a new tab listener
-            utils.tabListener();
+        // the user has the not seen any of the notifications
+        if (typeof durationTimerStartTime === 'undefined' && typeof intervalTimerStartTime === 'undefined') {
+            // if on launch, the active tab is about:newtab and 24+ hours have elapsed since first launch
+            if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
+                // inject our tour snippet
+                aboutNewTab.modifyAboutNewtab();
+            // if on launch, the active tab is not about:newtab but, 24+ hours have elapsed since first launch
+            } else if (!activeTabURL !== 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
+                // start a new tab listener
+                utils.tabListener();
+            }
+        // if the durationTimerStartTime is not undefined, we should start it with the time remaining
+        } else if (typeof durationTimerStartTime !== 'undefined') {
+            let durationRemaining = Date.now() - durationTimerStartTime;
+            scheduler.startSnippetDurationTimer(durationRemaining);
+        // if the intervalTimerStartTime is not undefined, we should start it with the time remaining
+        } else if (typeof intervalTimerStartTime !== 'undefined') {
+            let intervalRemaining = Date.now() - intervalTimerStartTime;
+            scheduler.startSnippetIntervalTimer(intervalRemaining);
         }
     }
 };
