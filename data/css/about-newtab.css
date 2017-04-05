@@ -70,14 +70,24 @@
     cursor: pointer;
 }
 
-.onboarding .close {
+/* dismiss button iteraction and style */
+.onboarding:hover .close {
     display: block;
+}
+
+.onboarding .close {
+    display: none;
     position: absolute;
     bottom: 120px;
     right: 20px;
     background: transparent url('../media/icons/close-icon.svg') 0 0 no-repeat;
-    width: 20px;
-    height: 20px;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.onboarding .close:hover {
+    background-image: url('../media/icons/close-icon-hover.svg');
 }
 
 /* Hide visually, but not to screen readers */
