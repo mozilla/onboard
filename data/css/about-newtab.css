@@ -33,11 +33,12 @@
     align-self: center;
     color: #666;
     margin: 0 20px;
-    flex-basis: 260px;
+    text-align: center;
+    flex-basis: 200px;
     flex-shrink: 6;
 }
 
-.onboarding .snippet-counter span {
+.onboarding .snippet-counter .counter {
     background-color: #666;
     color: #fff;
     margin-right: 15px;
@@ -48,7 +49,8 @@
 .onboarding .snippet-copy {
     order: 2;
     padding: 0 20px;
-    flex-basis: 460px;
+    flex-basis: 400px;
+    flex-shrink: 4;
 }
 
 .onboarding .snippet-icon {
@@ -58,6 +60,7 @@
 }
 
 .onboarding button {
+    order: 3;
     display: block;
     background-color: #0095dd;
     color: #fff;
@@ -68,6 +71,7 @@
     font-size: 1rem;
     text-align: center;
     cursor: pointer;
+    flex-basis: 200px;
 }
 
 /* dismiss button iteraction and style */
@@ -101,4 +105,17 @@
     clip: rect(0 0 0 0);
     padding: 0;
     border: 0;
+}
+
+@media only screen and (max-width: 1000px) {
+    .main-title {
+        display: block;
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width: 780px) {
+    .main-title {
+        display: none;
+    }
 }
