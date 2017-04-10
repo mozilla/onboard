@@ -17,8 +17,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 2000;
-    intervals.waitInterval = 2000;
+    intervals.oneDay = 30000;
+    intervals.waitInterval = 30000;
 }
 
 /**
@@ -44,8 +44,9 @@ exports.main = function() {
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
     let variation = prefService.get('distribution.variation');
 
+    setUpTestEnv();
+
     if (typeof variation === 'undefined') {
-        setUpTestEnv();
         storageManager.set('variation', prefService.get('distribution.variation'));
     } else {
         storageManager.set('variation', variation);
