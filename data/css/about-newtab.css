@@ -31,7 +31,7 @@
 
 .onboarding .snippet-counter {
     align-self: center;
-    color: #666;
+    color: #767676;
     margin: 0 20px;
     text-align: center;
     flex-basis: 200px;
@@ -39,11 +39,11 @@
 }
 
 .onboarding .snippet-counter .counter {
-    background-color: #666;
+    background-color: #767676;
     color: #fff;
     margin-right: 15px;
     padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: 12px;
 }
 
 .onboarding .snippet-copy {
@@ -65,7 +65,7 @@
     background-color: #0095dd;
     color: #fff;
     margin: 10px 0;
-    padding: 10px 36px;
+    padding: 10px 15px;
     border: 2px solid #0092cc;
     border-radius: 4px;
     font-size: 1rem;
@@ -85,13 +85,18 @@
     bottom: 120px;
     right: 20px;
     background: transparent url('../media/icons/close-button.svg') 0 0 no-repeat;
-    background-size: 25px 25px;
-    width: 25px;
-    height: 25px;
+    background-size: 10px 11px;
+    width: 10px;
+    height: 11px;
 }
 
 .onboarding .close:hover {
+    bottom: 114px;
+    right: 13px;
     background-image: url('../media/icons/close-button-hover.svg');
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
 }
 
 /* Hide visually, but not to screen readers */
@@ -108,13 +113,6 @@
 }
 
 @media only screen and (max-width: 1000px) {
-    .main-title {
-        display: block;
-        margin-top: 10px;
-    }
-}
-
-@media only screen and (max-width: 780px) {
     .main-title {
         display: none;
     }
