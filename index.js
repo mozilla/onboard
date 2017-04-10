@@ -98,7 +98,7 @@ exports.main = function() {
                 // restart the timer for the remainder
                 scheduler.startSnippetIntervalTimer(intervalRemaining);
             } else {
-                // listen for tabs.open
+                utils.resetState();
                 utils.tabListener();
             }
         }
