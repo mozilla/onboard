@@ -65,7 +65,6 @@ exports.main = function() {
     if (typeof installTime !== 'undefined') {
         // call the session counter
         utils.browserSessionCounter();
-
         // the user has the not seen any of the notifications
         if (typeof durationTimerStartTime === 'undefined' && typeof intervalTimerStartTime === 'undefined') {
             // if on launch, the active tab is about:newtab and 24+ hours have elapsed since first launch
@@ -80,9 +79,8 @@ exports.main = function() {
         // if the durationTimerStartTime is not undefined, we should start it with the time remaining
         } else if (typeof durationTimerStartTime !== 'undefined') {
             let durationRemaining = Date.now() - durationTimerStartTime;
-
             // if the duration timer has not run out
-            if (durationRemaining > 0) {
+            if (durationRemaining > 60000) {
                 // restart the timer for the remainder
                 scheduler.startSnippetDurationTimer(durationRemaining);
             } else {
@@ -92,9 +90,8 @@ exports.main = function() {
         // if the intervalTimerStartTime is not undefined, we should start it with the time remaining
         } else if (typeof intervalTimerStartTime !== 'undefined') {
             let intervalRemaining = Date.now() - intervalTimerStartTime;
-
             // if the interval timer has not run out
-            if (intervalRemaining > 0) {
+            if (intervalRemaining > 60000) {
                 // restart the timer for the remainder
                 scheduler.startSnippetIntervalTimer(intervalRemaining);
             } else {
