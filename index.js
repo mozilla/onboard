@@ -80,11 +80,27 @@ exports.main = function() {
         // if the durationTimerStartTime is not undefined, we should start it with the time remaining
         } else if (typeof durationTimerStartTime !== 'undefined') {
             let durationRemaining = Date.now() - durationTimerStartTime;
-            scheduler.startSnippetDurationTimer(durationRemaining);
+
+            // if the duration timer has not run out
+            if (durationRemaining > 0) {
+                // restart the timer for the remainder
+                scheduler.startSnippetDurationTimer(durationRemaining);
+            } else {
+                // start an interval timer
+                scheduler.startSnippetIntervalTimer();
+            }
         // if the intervalTimerStartTime is not undefined, we should start it with the time remaining
         } else if (typeof intervalTimerStartTime !== 'undefined') {
             let intervalRemaining = Date.now() - intervalTimerStartTime;
-            scheduler.startSnippetIntervalTimer(intervalRemaining);
+
+            // if the interval timer has not run out
+            if (intervalRemaining > 0) {
+                // restart the timer for the remainder
+                scheduler.startSnippetIntervalTimer(intervalRemaining);
+            } else {
+                // listen for tabs.open
+                utils.tabListener();
+            }
         }
     }
 };
