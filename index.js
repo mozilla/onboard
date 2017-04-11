@@ -19,8 +19,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 30000;
-    intervals.waitInterval = 30000;
+    intervals.oneDay = 3000;
+    intervals.waitInterval = 3000;
 }
 
 /**
