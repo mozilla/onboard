@@ -5,6 +5,7 @@ let tabs = require('sdk/tabs');
 
 let { aboutNewTab } = require('lib/content-scripts/about-newtab.js');
 let { flowManager } = require('lib/flow-manager.js');
+let { gaUtils } = require('lib/ga-utils.js');
 let { intervals } = require('lib/intervals.js');
 let { newtabUtils } = require('lib/newtab-utils.js');
 let { scheduler } = require('lib/scheduler.js');
@@ -19,8 +20,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 3000;
-    intervals.waitInterval = 3000;
+    intervals.oneDay = 30000;
+    intervals.waitInterval = 30000;
 }
 
 /**
@@ -74,6 +75,8 @@ exports.main = function() {
             if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
                 // inject our tour snippet
                 aboutNewTab.modifyAboutNewtab();
+                // record an impression
+                gaUtils.impressionCount();
             // if on launch, the active tab is not about:newtab but, 24+ hours have elapsed since first launch
             } else if (!activeTabURL !== 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
                 // start a new tab listener
@@ -95,6 +98,8 @@ exports.main = function() {
                 flowManager.setOverallTourProgress();
                 // ensure that any timers in storage is reset
                 scheduler.resetStoredTimers();
+                // set snippet impression count back to 0
+                storageManager.set('impressionCount', 0);
                 // start an interval timer
                 scheduler.startSnippetIntervalTimer();
             }
