@@ -4,7 +4,9 @@ let prefService = require('sdk/preferences/service');
 let tabs = require('sdk/tabs');
 
 let { aboutNewTab } = require('lib/content-scripts/about-newtab.js');
+let { flowManager } = require('lib/flow-manager.js');
 let { intervals } = require('lib/intervals.js');
+let { newtabUtils } = require('lib/newtab-utils.js');
 let { scheduler } = require('lib/scheduler.js');
 let { storageManager } = require('lib/storage-manager.js');
 let { utils } = require('lib/utils.js');
@@ -17,8 +19,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 30000;
-    intervals.waitInterval = 30000;
+    intervals.oneDay = 15000;
+    intervals.waitInterval = 15000;
 }
 
 /**
@@ -41,6 +43,7 @@ exports.main = function() {
     let durationTimerStartTime = storageManager.get('durationTimerStartTime');
     let intervalTimerStartTime = storageManager.get('intervalTimerStartTime');
     let installTime = storageManager.get('installTime');
+    let lastStep = storageManager.get('step');
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
     let variation = prefService.get('distribution.variation');
 
@@ -76,14 +79,22 @@ exports.main = function() {
                 // start a new tab listener
                 utils.tabListener();
             }
-        // if the durationTimerStartTime is not undefined, we should start it with the time remaining
+        // if the durationTimerStartTime is not undefined
         } else if (typeof durationTimerStartTime !== 'undefined') {
             let durationRemaining = Date.now() - durationTimerStartTime;
-            // if the duration timer has not run out
-            if (durationRemaining > 60000) {
+            // if the duration left is more than a minute
+            if (durationRemaining > intervals.oneMinute) {
                 // restart the timer for the remainder
                 scheduler.startSnippetDurationTimer(durationRemaining);
+                // start the tabListener
+                utils.tabListener();
             } else {
+                // store the last snippet in the missedSnippets array
+                newtabUtils.updateMissedSnippets(lastStep);
+                // progress tour
+                flowManager.setOverallTourProgress();
+                // ensure that any timers in storage is reset
+                scheduler.resetStoredTimers();
                 // start an interval timer
                 scheduler.startSnippetIntervalTimer();
             }
@@ -91,7 +102,7 @@ exports.main = function() {
         } else if (typeof intervalTimerStartTime !== 'undefined') {
             let intervalRemaining = Date.now() - intervalTimerStartTime;
             // if the interval timer has not run out
-            if (intervalRemaining > 60000) {
+            if (intervalRemaining > intervals.oneMinute) {
                 // restart the timer for the remainder
                 scheduler.startSnippetIntervalTimer(intervalRemaining);
             } else {
