@@ -15,7 +15,7 @@
 .onboarding .snippet-content {
     display: flex;
     flex-flow: row;
-    justify-content: center;
+    justify-content: space-between;
     margin: 0 auto;
     width: 90%;
 }
@@ -35,7 +35,7 @@
     align-self: center;
     color: #767676;
     margin: 0 20px 0 0;
-    flex-basis: 260px;
+    flex-basis: 200px;
     flex-shrink: 6;
 }
 
@@ -49,19 +49,27 @@
 
 .onboarding .snippet-copy {
     order: 2;
+    display: inline-block;
     padding: 0 60px 0 20px;
-    flex-basis: 420px;
+    flex-basis: 480px;
     flex-shrink: 4;
+    align-self: center;
+}
+
+.onboarding .snippet-copy-cta {
+    order: 3;
+    display: inline-block;
+    flex-basis: 200px;
+    flex-shrink: 6;
+    align-self: center;
 }
 
 .onboarding .snippet-icon {
-    order: 1;
-    flex-basis: 64px;
-    align-self: flex-start;
+    float: left;
+    margin-right: 20px;
 }
 
 .onboarding button {
-    order: 3;
     display: block;
     background-color: #0094fb;
     color: #fff;
@@ -69,12 +77,12 @@
     padding: 10px;
     border: 2px solid #006ecf;
     border-radius: 2px;
+    min-width: 200px;
     font-size: 1rem;
     font-weight: bold;
     text-align: center;
     letter-spacing: .035em;
     cursor: pointer;
-    flex-basis: 260px;
 }
 
 /* dismiss button iteraction and style */
@@ -85,8 +93,8 @@
 .onboarding .close {
     display: none;
     position: absolute;
-    bottom: 60px;
-    right: 50px;
+    bottom: 54px;
+    right: 30px;
     background: transparent url('../media/icons/close-button.svg') 0 0 no-repeat;
     background-size: 10px 11px;
     width: 10px;
@@ -94,8 +102,8 @@
 }
 
 .onboarding .close:hover {
-    bottom: 54px;
-    right: 43px;
+    bottom: 48px;
+    right: 23px;
     background-image: url('../media/icons/close-button-hover.svg');
     background-size: 24px 24px;
     width: 24px;
@@ -121,8 +129,13 @@
     }
 
     .onboarding .snippet-counter {
-        flex-basis: 150px;
+        flex-basis: 100px;
         flex-shrink: 6;
+    }
+
+    .onboarding .snippet-copy {
+        padding: 0 20px;
+        flex-basis: 520px;
     }
 
     .onboarding .close {
