@@ -41,6 +41,7 @@ exports.onUnload = function(reason) {
 */
 exports.main = function() {
     let activeTabURL = tabs.activeTab.url;
+    let detroyAddon = storageManager.get('destroyAddon');
     let durationTimerStartTime = storageManager.get('durationTimerStartTime');
     let intervalTimerStartTime = storageManager.get('intervalTimerStartTime');
     let installTime = storageManager.get('installTime');
@@ -49,6 +50,13 @@ exports.main = function() {
     let variation = prefService.get('distribution.variation');
 
     setUpTestEnv();
+
+    // if destroyAddon is true
+    if (detroyAddon) {
+        // destroy the pageMod as the tour is complete.
+        aboutNewTab.destroy();
+        return;
+    }
 
     if (typeof variation === 'undefined') {
         storageManager.set('variation', prefService.get('distribution.variation'));
