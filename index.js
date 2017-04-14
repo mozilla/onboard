@@ -20,8 +20,8 @@ function setUpTestEnv() {
     prefService.set('browser.newtab.preload', false);
     prefService.set('browser.newtab.url', 'about:newtab');
 
-    intervals.oneDay = 30000;
-    intervals.waitInterval = 30000;
+    intervals.oneDay = 120000;
+    intervals.waitInterval = 120000;
 }
 
 /**
@@ -79,8 +79,20 @@ exports.main = function() {
         utils.browserSessionCounter();
         // the user has the not seen any of the notifications
         if (typeof durationTimerStartTime === 'undefined' && typeof intervalTimerStartTime === 'undefined') {
+            // the user closed the browser before the first snippet timer ran out
+            if (timeElapsedSinceLastLaunch < intervals.oneDay) {
+                // calculate how much of the first snippet interval remain
+                let firstSnippetIntervalRemainder = intervals.oneDay - timeElapsedSinceLastLaunch;
+                // if the remainder is greater than a minute
+                if (firstSnippetIntervalRemainder > intervals.oneMinute) {
+                    // start the first snippet timer for the remainder
+                    scheduler.startFirstSnippetTimer(firstSnippetIntervalRemainder);
+                } else {
+                    // listen for new tabs
+                    utils.tabListener();
+                }
             // if on launch, the active tab is about:newtab and 24+ hours have elapsed since first launch
-            if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
+            } else if (activeTabURL === 'about:newtab' && timeElapsedSinceLastLaunch >= intervals.oneDay) {
                 // inject our tour snippet
                 aboutNewTab.modifyAboutNewtab();
                 // record an impression
@@ -92,7 +104,7 @@ exports.main = function() {
             }
         // if the durationTimerStartTime is not undefined
         } else if (typeof durationTimerStartTime !== 'undefined') {
-            let durationRemaining = Date.now() - durationTimerStartTime;
+            let durationRemaining = intervals.oneDay - (Date.now() - durationTimerStartTime);
             // if the duration left is more than a minute
             if (durationRemaining > intervals.oneMinute) {
                 // restart the timer for the remainder
@@ -113,7 +125,7 @@ exports.main = function() {
             }
         // if the intervalTimerStartTime is not undefined, we should start it with the time remaining
         } else if (typeof intervalTimerStartTime !== 'undefined') {
-            let intervalRemaining = Date.now() - intervalTimerStartTime;
+            let intervalRemaining = intervals.oneDay - (Date.now() - intervalTimerStartTime);
             // if the interval timer has not run out
             if (intervalRemaining > intervals.oneMinute) {
                 // restart the timer for the remainder
