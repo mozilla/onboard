@@ -26,7 +26,7 @@ function setUpTestEnv() {
 
 /**
  * This is called when the add-on is unloaded. If the reason is either uninstall,
- *  disable or shutdown, we can do some cleanup.
+ * disable or shutdown, we can do some cleanup.
  */
 exports.onUnload = function(reason) {
     if (reason === 'uninstall' || reason === 'disable') {
@@ -74,9 +74,8 @@ exports.main = function() {
         scheduler.startFirstSnippetTimer();
     }
 
+    // post first run
     if (typeof installTime !== 'undefined') {
-        // call the session counter
-        utils.browserSessionCounter();
         // the user has the not seen any of the notifications
         if (typeof durationTimerStartTime === 'undefined' && typeof intervalTimerStartTime === 'undefined') {
             // the user closed the browser before the first snippet timer ran out
@@ -111,6 +110,8 @@ exports.main = function() {
                 scheduler.startSnippetDurationTimer(durationRemaining);
                 // start the tabListener
                 utils.tabListener();
+                // call the session counter
+                utils.browserSessionCounter();
             } else {
                 // store the last snippet in the missedSnippets array
                 newtabUtils.updateMissedSnippets(lastStep);
@@ -118,8 +119,6 @@ exports.main = function() {
                 flowManager.setOverallTourProgress();
                 // ensure that any timers in storage is reset
                 scheduler.resetStoredTimers();
-                // set snippet impression count back to 0
-                storageManager.set('impressionCount', 0);
                 // start an interval timer
                 scheduler.startSnippetIntervalTimer();
             }
