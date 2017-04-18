@@ -23,6 +23,7 @@
     "css",
     "html"
   ],
+  "hasEmbeddedWebExtension": true,
   "devDependencies": {
     "eslint": "^3.17.1",
     "jpm": "^1.3.0"
