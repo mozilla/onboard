@@ -93,7 +93,7 @@ _____________________________________*/
     display: block;
 }
 .onboarding .close {
-    display: noen;
+    display: none;
     grid-column:  8;
     grid-row: 1;
     justify-self: center;
