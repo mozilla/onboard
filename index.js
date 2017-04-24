@@ -41,6 +41,7 @@ exports.onUnload = function(reason) {
 */
 exports.main = function() {
     let activeTabURL = tabs.activeTab.url;
+    let clientId = storageManager.get('clientId');
     let detroyAddon = storageManager.get('destroyAddon');
     let durationTimerStartTime = storageManager.get('durationTimerStartTime');
     let intervalTimerStartTime = storageManager.get('intervalTimerStartTime');
@@ -51,14 +52,25 @@ exports.main = function() {
 
     setUpTestEnv();
 
-    gaUtils.sendStartupGAPing();
-
     // if destroyAddon is true
     if (detroyAddon) {
         // destroy the pageMod as the tour is complete.
         aboutNewTab.destroy();
         return;
     }
+
+    /*
+     * if the clientId is not set, this is the first session
+     * generate and store for future use
+     */
+    if (typeof clientId === 'undefined') {
+        // Convert clientId to a string for GA
+        let clientId = Math.random() + '';
+        // Strip of the leading 0. and store
+        storageManager.set('clientId', clientId.substr(2));
+    }
+
+    gaUtils.sendStartupGAPing();
 
     if (typeof variation === 'undefined') {
         storageManager.set('variation', prefService.get('distribution.variation'));
