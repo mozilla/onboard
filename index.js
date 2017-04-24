@@ -51,6 +51,8 @@ exports.main = function() {
 
     setUpTestEnv();
 
+    gaUtils.sendStartupGAPing();
+
     // if destroyAddon is true
     if (detroyAddon) {
         // destroy the pageMod as the tour is complete.
