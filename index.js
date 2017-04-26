@@ -13,18 +13,6 @@ let { storageManager } = require('lib/storage-manager.js');
 let { utils } = require('lib/utils.js');
 
 /**
- * A temporary function for testing purposes.
- */
-function setUpTestEnv() {
-    prefService.set('distribution.variation', 'contentVariationA');
-    prefService.set('browser.newtab.preload', false);
-    prefService.set('browser.newtab.url', 'about:newtab');
-
-    intervals.oneDay = 120000;
-    intervals.waitInterval = 120000;
-}
-
-/**
  * This is called when the add-on is unloaded. If the reason is either uninstall,
  * disable or shutdown, we can do some cleanup.
  */
@@ -50,8 +38,6 @@ exports.main = function() {
     let timeElapsedSinceLastLaunch = Date.now() - installTime;
     let variation = prefService.get('distribution.variation');
 
-    setUpTestEnv();
-
     // if destroyAddon is true
     if (detroyAddon) {
         // destroy the pageMod as the tour is complete.
@@ -72,11 +58,7 @@ exports.main = function() {
 
     gaUtils.sendStartupGAPing();
 
-    if (typeof variation === 'undefined') {
-        storageManager.set('variation', prefService.get('distribution.variation'));
-    } else {
-        storageManager.set('variation', variation);
-    }
+    storageManager.set('variation', variation);
 
     // if installTime is undefined, this is the first launch of Firefox
     if (typeof installTime === 'undefined') {
