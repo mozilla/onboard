@@ -1,3 +1,3 @@
 # OnBoard
 
-The Firefox Onboarding Add-On experiment.
+The Firefox Onboarding Add-On experiment. (No longer in use)

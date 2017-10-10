@@ -51,6 +51,7 @@ module.exports = {
     },
     "globals": {
         "addon": true,
+        "Cu": true,
         "exports": true,
         "module": true,
         "require": true,
